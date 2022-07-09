@@ -18,3 +18,11 @@
 .style4{
   padding: 20px;
 }
+.style5{
+  margin-top: 1%;
+  transform: perspective(100px) translateX(-400px);
+}
+.style6{
+  margin-top: 1%;
+  transform: perspective(100px) translateX(-50px);
+}
