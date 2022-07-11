@@ -10,55 +10,101 @@ function Catagroy() {
     const useparams = useParams("id");
 
     const [userdata, setuserData] = useState([])
-    const [productname, setproductname] = useState(null);
-  const [productprize, setproductprize] = useState(null);
-
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const Details = {
-      mobilename : productname,
-      mobileprize : productprize
-    }
-    console.log(Details);
-
-    //axios
-
-    axios.post("http://localhost:8000/mobile", Details).then((data) => {
-      console.log(data);
-      if (data.data.error){
-        alert(data.data.error)
-      }else{
-        navigate(`/catagroy/${useparams.id}`)
-      }
-    }).catch((err) => {
-      console.log(err)
-      alert("something went to wrong")
+    
+    const [productUpload, setProductUpload] = useState({
+      name : "",
+      prize : "",
+      photo : ""
     })
 
 
-    let pk = document.getElementById('aa');
-    pk.value = "";
-    let pk1 = document.getElementById('bb');
-    pk1.value = "";
 
+
+    const [name, setName] = useState({name : ""});
+    const [prize, setPrize] = useState({prize : ""});
+    // const [file, setFile] = useState({photo : ""});
+
+
+    // const onClickevent = (e) => {
+    //   setFile(e.target.files[0]);
+    // }
+  //product update
+
+  const onChangeEvent = (e) => {
+    e.preventDefault();
+
+    const pp = {
+      name : name,
+      prize : prize
+    }
+    console.log(pp)
+
+    {userdata.map((datas) => {
+      axios.put(`http://localhost:8000/mobileup/${datas._id}`,pp).then((data) => {
+        console.log(data);
+        alert("success")
+        navigate(`/catagroy/${useparams.id}`)
+      }).catch((err) => {
+        console.log(err)
+      })
+    })}
+
+    let pk = document.getElementById('dd');
+    pk.value = "";
+    let pk1 = document.getElementById('hh');
+    pk1.value = "";
   }
 
 
 
+  const handleChange = (e) => {
+    setProductUpload({...productUpload, [e.target.name] : e.target.value});
+  }
+
+  const handlePhoto = (e) => {
+    setProductUpload ({...productUpload, photo : e.target.files[0]});
+    console.log(productUpload.photo)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    formData.append('name' , productUpload.name);
+    formData.append('prize' , productUpload.prize);
+    formData.append('photo' , productUpload.photo);
+
+    console.log(productUpload.photo);
+
+    axios.post("http://localhost:8000/productupload", formData)
+    .then(res =>{
+      console.log(res)
+      alert("product added!!!")
+      navigate(`/catagroy/${useparams.id}`)
+    }).catch(err => {
+      console.log(err);
+    })
+
+    let pk = document.getElementById('ll');
+    pk.value = "";
+    let pk1 = document.getElementById('mm');
+    pk1.value = "";
+    let pk3 = document.getElementById('nn');
+    pk3.value = "";
+  }
+  
+
 
   useEffect(() => {
     
-    axios.get("http://localhost:8000/mobdata").then((data) => {
-      setuserData(data.data.data);
+    axios.get("http://localhost:8000/data").then((data) => {
+      setuserData(data.data);
     }).catch((err) => {
       console.log(err)
     })
   }, [])
 
-
-  console.log(userdata)
 
 
 
@@ -69,11 +115,20 @@ function Catagroy() {
     navigate(`/admindashboard/${useparams.id}`)
   }
 
+   
+  const pp = (e) => {
+    e.preventDefault();
+    navigate(`/catagroy/${useparams.id}`)
+  }
+
   
   const geter = () => {
     var elems = document.querySelectorAll('.modal');
     var trigg = M.Modal.init(elems, {});
   }
+
+
+
   
   return (
     <div>
@@ -81,6 +136,7 @@ function Catagroy() {
         <div className="container">
           <div>
             <a href="/rr" className="brand-logo left">Devship</a>
+            <button className='btn indigo right style1' onClick={(e) => pp(e)}>Catagroy</button>
             <button className='btn indigo right style5 modal-trigger' data-target="change" onClick={(e) => geter(e)}>CreateProduct</button>
             <button className='btn indigo right style1' onClick={(e) => pass(e)}>DashBoard</button>
           </div>
@@ -99,9 +155,20 @@ function Catagroy() {
                     <div className='col s3'>
                       <div className='card'>
                         <div className='card-content'>
-                          <p>Product name  :&nbsp;&nbsp;&nbsp;{datas.mobilename}</p>
+                          <img src={`http://localhost:8000/${datas.photo}`} style={{height : "200px" , width : "200px"}} alt="..."/>
+                          <p>Mobile name  :&nbsp;&nbsp;&nbsp;{datas.name}</p>
                           
-                          <p>product prize :&nbsp;&nbsp;&nbsp;{datas.mobileprize}</p>
+                          <p>Mobile prize :&nbsp;&nbsp;&nbsp;{datas.prize}</p>
+                        </div>
+                        <div className='card-action center'>
+                          <button className='btn '   onClick={()=>{
+                    axios.post(`http://localhost:8000/productdel/${datas._id}`).then((data)=>{
+                      console.log(data);
+                      navigate(`/catagroy/${useparams.id}`)
+                    }).catch((err)=>{
+                    console.log(err)
+                  })}}>Remove</button>&nbsp;
+                  <button className='btn modal-trigger' data-target="change1" onClick={(e) => geter(e)}>Update</button>
                         </div>
                       </div>
                       </div>
@@ -113,27 +180,56 @@ function Catagroy() {
 
 
       <div id="change" className="modal">
-        <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} encType = "multipart/form-data" >
           <div className="modal-content">
-            <h4 className='center'>Add Product</h4>
+            <h4 className='center'>Add Mobile</h4>
             <div className="row">
               <div className="input-field col s12">
-                <input type="text" className="validate" name = "productName" id='aa' onChange={(e) => setproductname (e.target.value)} required />
-                <label for="Adminpassword">Product Name</label>
+                <input type="text" className="validate" id='ss' name = "name" value={productUpload.name}   onChange={handleChange} required />
+                <label for="Adminpassword">Mobile Name</label>
               </div>
             </div>
 
             <div className="row">
               <div className="input-field col s12">
-                <input  type="text" className="validate" name="productPrize" id='bb' onChange={(e) => setproductprize (e.target.value)}  required />
-                <label for="Adminpassword">Product Prize</label>
+                <input  type="text" className="validate" id='ww' name="prize" value={productUpload.prize}  onChange={handleChange}  required />
+                <label>Mobile Prize</label>
               </div>
             </div>
+              <input type='file' name = 'photo' id='ff' onChange={handlePhoto} accept = ".png, .jpeg, .jpg"/>
             </div>
           <div className="modal-footer">
             <button type='submit' className='btn center'>Upload</button>
           </div>
         </form>
+      </div>
+
+
+    {/* product Update */}
+
+      <div id="change1" className="modal">
+              <form onSubmit={onChangeEvent} encType = "multipart/form-data" >
+              <div className="modal-content">
+                <h4 className='center'>Update Mobile</h4>
+                <div className="row">
+                  <div className="input-field col s12">
+                    <input type="text" className="validate" id='dd' name = "name" onChange={(e) => setName(e.target.value)} required />
+                    <label for="Adminpassword">Mobile Name</label>
+                  </div>
+                </div>
+    
+                <div className="row">
+                  <div className="input-field col s12">
+                    <input  type="text" className="validate" id='hh' name="prize"   onChange={(e) => setPrize(e.target.value)}  required />
+                    <label>Mobile Prize</label>
+                  </div>
+                </div>
+                  {/* <input type='file' name = 'photo' id='bb' accept = ".png, .jpeg, .jpg" onChange={onClickevent}/> */}
+                </div>
+              <div className="modal-footer">
+                <button type='submit' className='btn center'>Upload</button>
+              </div>
+            </form>
       </div>
 
     </div>
