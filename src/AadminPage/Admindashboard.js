@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import axios from 'axios';
@@ -9,7 +9,7 @@ import axios from 'axios';
 function Admindashboard() {
 
   
-
+  const [data, setData] = useState([]);
   
 
   const navigate = useNavigate();
@@ -33,6 +33,16 @@ function Admindashboard() {
   }
 
 
+  useEffect(() => {
+    axios.get('http://localhost:8000/adminclientdata').then((data) => {
+      console.log(data);
+      setData(data.data);
+    }).catch((err) => {
+      console.log(err)
+    })
+  }, [])
+  
+
   return (
     <div>
       <nav class="nav-wraper indigo">
@@ -50,14 +60,46 @@ function Admindashboard() {
         <div className='style6'>
         </div>
       </ul>
+
+    
       <div className='container'>
-        <div className='card'>
-          <div className='card-content'>
-            <h5 className='center'>Welcome to the admin page ,{useparams.id}</h5>
-          </div>
+        <div className='row s12'>
+        <div className='center'>
+        <h4>Welcome to Devship Admin {useparams.id}</h4>
+        <label className='style9'>Our Client Order Details</label>
+        </div>
+        {data.map((datas) => {
+                    return(<>
+                    <div className='row'>
+                    <div className='card '>
+                      <div className='card-content col s4'>
+                      <img src={datas.photo} style={{height : "200px" , width : "200px"}} alt="..."/>
+                      </div>
+
+                      <div className='card-content col s4'>
+                          <h5>Client Name : &nbsp;&nbsp;{datas.username}</h5>
+                          <h5>Product Name :&nbsp;&nbsp; {datas.name}</h5>
+                          <h5>Client prize :&nbsp;&nbsp; {datas.prize}</h5>
+                          <h5> Payment Status :&nbsp;&nbsp;<span style={{color : "green"}}>{datas.paid}</span></h5>
+                      </div>
+                      <div className='card-content col s4'>
+                          <button className='btn red text-white right style10' onClick={()=>{
+                    axios.post(`http://localhost:8000/adminordercancel/${datas._id}`).then((data)=>{
+                      console.log(data);
+                      navigate(`/admindashboard/${useparams.id}`)
+                    }).catch((err)=>{
+                    console.log(err)
+                  })}}>Cancel</button>
+                      </div>
+                      <hr/>
+                      
+                    </div>
+                    </div>
+                    </>
+                    )
+            })}
         </div>
       </div>
-
      
     </div>
   )

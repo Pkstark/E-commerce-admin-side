@@ -171,7 +171,7 @@ function Catagroy() {
       <div id="change" className="modal">
       <form onSubmit={handleSubmit} encType = "multipart/form-data" >
           <div className="modal-content">
-            <h4 className='center'>Add Mobile</h4>
+            <h4 className='center'>Add Shoes</h4>
             <div className="row">
               <div className="input-field col s12">
                 <input type="text" className="validate" id='ss' name = "name" value={productUpload.name}   onChange={handleChange} required />
