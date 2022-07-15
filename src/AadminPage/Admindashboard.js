@@ -34,15 +34,17 @@ function Admindashboard() {
 
 
   useEffect(() => {
-    axios.get('http://localhost:8000/adminclientdata').then((data) => {
+    getData();
+  }, [])
+  
+let getData = () => {
+  axios.get('http://localhost:8000/adminclientdata').then((data) => {
       console.log(data);
       setData(data.data);
     }).catch((err) => {
       console.log(err)
     })
-  }, [])
-  
-
+}
   return (
     <div>
       <nav class="nav-wraper indigo">
@@ -79,14 +81,16 @@ function Admindashboard() {
                       <div className='card-content col s4'>
                           <h5>Client Name : &nbsp;&nbsp;{datas.username}</h5>
                           <h5>Product Name :&nbsp;&nbsp; {datas.name}</h5>
-                          <h5>Client prize :&nbsp;&nbsp; {datas.prize}</h5>
+                          <h5>Product prize : Rs.&nbsp;&nbsp;&nbsp;<span className='style11'>{datas.prize}</span></h5>
+                          <h5>Offer Prize : Rs. {datas.offerprize}</h5>
                           <h5> Payment Status :&nbsp;&nbsp;<span style={{color : "green"}}>{datas.paid}</span></h5>
                       </div>
                       <div className='card-content col s4'>
                           <button className='btn red text-white right style10' onClick={()=>{
                     axios.post(`http://localhost:8000/adminordercancel/${datas._id}`).then((data)=>{
                       console.log(data);
-                      navigate(`/admindashboard/${useparams.id}`)
+                      // navigate(`/admindashboard/${useparams.id}`)
+                      getData();
                     }).catch((err)=>{
                     console.log(err)
                   })}}>Cancel</button>

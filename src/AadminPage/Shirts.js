@@ -14,18 +14,21 @@ function Catagroy() {
     const [productUpload, setProductUpload] = useState({
       name : "",
       prize : "",
+      offerprize : "",
       photo : ""
     })
 
     const [name, setName] = useState({name : ""});
     const [prize, setPrize] = useState({prize : ""});
+    const [offerprize, setOfferPrize] = useState({offerprize : ""});
 
     const onChangeEvent = (e) => {
       e.preventDefault();
   
       const pp = {
         name : name,
-        prize : prize
+        prize : prize,
+        offerprize : offerprize
       }
       console.log(pp)
   
@@ -33,7 +36,8 @@ function Catagroy() {
         axios.put(`http://localhost:8000/shirtup/${datas._id}`,pp).then((data) => {
           console.log(data);
           alert("success")
-          navigate(`/catagroy/${useparams.id}`)
+          // navigate(`/catagroy/${useparams.id}`)
+          getData();
         }).catch((err) => {
           console.log(err)
         })
@@ -43,6 +47,8 @@ function Catagroy() {
       pk.value = "";
       let pk1 = document.getElementById('hh');
       pk1.value = "";
+      let pk2 = document.getElementById('h');
+      pk2.value = "";
     }
   
   
@@ -64,6 +70,7 @@ function Catagroy() {
 
     formData.append('name' , productUpload.name);
     formData.append('prize' , productUpload.prize);
+    formData.append('offerprize' , productUpload.offerprize);
     formData.append('photo' , productUpload.photo);
 
     console.log(productUpload.photo);
@@ -83,20 +90,24 @@ function Catagroy() {
     pk1.value = "";
     let pk3 = document.getElementById('ff');
     pk3.value = "";
+    let pk4 = document.getElementById('w');
+    pk4.value = "";
   }
   
 
 
   useEffect(() => {
     
-    axios.get("http://localhost:8000/sdata").then((data) => {
-      setuserData(data.data);
-    }).catch((err) => {
-      console.log(err)
-    })
+getData();
   }, [])
 
-
+const getData = () => {
+  axios.get("http://localhost:8000/sdata").then((data) => {
+    setuserData(data.data);
+  }).catch((err) => {
+    console.log(err)
+  })
+}
   console.log(userdata)
 
 
@@ -146,13 +157,15 @@ function Catagroy() {
                           <img src={`http://localhost:8000/${datas.photo}`} style={{height : "200px" , width : "200px"}} alt="..."/>
                           <p>Shirt name  :&nbsp;&nbsp;&nbsp;{datas.name}</p>
                           
-                          <p>Shirt prize :&nbsp;&nbsp;&nbsp;{datas.prize}</p>
+                          <p>Shirt prize : Rs.&nbsp;&nbsp;&nbsp;<span className='style11'>{datas.prize}</span></p>
+                          <p>Offer Prize : Rs. {datas.offerprize}</p>
                         </div>
                         <div className='card-action center'>
                           <button className='btn'  onClick={()=>{
                     axios.post(`http://localhost:8000/shirtdel/${datas._id}`).then((data)=>{
                       console.log(data);
-                      navigate(`/catagroy/${useparams.id}`)
+                      // navigate(`/catagroy/${useparams.id}`)
+                      getData();
                     }).catch((err)=>{
                     console.log(err)
                   })}}>Remove</button>&nbsp;
@@ -185,6 +198,13 @@ function Catagroy() {
                 <label>Shirt Prize</label>
               </div>
             </div>
+
+            <div className="row">
+              <div className="input-field col s12">
+                <input  type="text" className="validate" id='w' name="offerprize" value={productUpload.offerprize}  onChange={handleChange}  required />
+                <label>Mobile offer Prize</label>
+              </div>
+            </div>
               <input type='file' name = 'photo' id='ff' onChange={handlePhoto} accept = ".png, .jpeg, .jpg"/>
             </div>
           <div className="modal-footer">
@@ -210,6 +230,13 @@ function Catagroy() {
                   <div className="input-field col s12">
                     <input  type="text" className="validate" id='hh' name="prize"   onChange={(e) => setPrize(e.target.value)}  required />
                     <label>Shirt Prize</label>
+                  </div>
+                </div>
+
+                <div className="row">
+                  <div className="input-field col s12">
+                    <input  type="text" className="validate" id='h' name="offerprize"   onChange={(e) => setOfferPrize(e.target.value)}  required />
+                    <label>offer Prize</label>
                   </div>
                 </div>
                   {/* <input type='file' name = 'photo' id='bb' accept = ".png, .jpeg, .jpg" onChange={onClickevent}/> */}

@@ -38,3 +38,7 @@ style8{
 .style10{
   transform: perspective(100px) translateY(90px);
 }
+.style11{
+  text-decoration: line-through;
+  color: red;
+}
