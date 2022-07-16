@@ -83,6 +83,7 @@ let getData = () => {
                           <h5>Product Name :&nbsp;&nbsp; {datas.name}</h5>
                           <h5>Product prize : Rs.&nbsp;&nbsp;&nbsp;<span className='style11'>{datas.prize}</span></h5>
                           <h5>Offer Prize : Rs. {datas.offerprize}</h5>
+                          <h5>TotalPrize : Rs. {datas.totalprize}</h5>
                           <h5> Payment Status :&nbsp;&nbsp;<span style={{color : "green"}}>{datas.paid}</span></h5>
                       </div>
                       <div className='card-content col s4'>
