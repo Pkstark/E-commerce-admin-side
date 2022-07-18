@@ -5,46 +5,32 @@ import M from 'materialize-css/dist/js/materialize.min.js';
 
 
 function Catagroy() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const useparams = useParams("id");
+  const useparams = useParams("id");
 
-    const [userdata, setuserData] = useState([])
-    
-    const [productUpload, setProductUpload] = useState({
-      name : "",
-      prize : "",
-      offerprize: "",
-      photo : ""
-    })
+  const [userdata, setuserData] = useState([])
 
-
-
-
-    const [name, setName] = useState({name : ""});
-    const [prize, setPrize] = useState({prize : ""});
-    const [offerprize, setOfferPrize] = useState({offerprize : ""});
-    // const [file, setFile] = useState({photo : ""});
+  const [productUpload, setProductUpload] = useState({
+    name: "",
+    prize: "",
+    offerprize: "",
+    photo: "",
+    availability: ""
+  })
 
 
-    // const onClickevent = (e) => {
-    //   setFile(e.target.files[0]);
-    // }
-  //product update
-
-  const onChangeEvent = (e) => {
+  const onChangeEventUpdate = (e) => {
     e.preventDefault();
 
-    const pp = {
-      name : name,
-      prize : prize,
-      offerprize : offerprize
+    const kk = {
+      availability : availability
     }
-    console.log(pp)
 
     {userdata.map((datas) => {
-      axios.put(`http://localhost:8000/mobileup/${datas._id}`,pp).then((data) => {
+      axios.put(`http://localhost:8000/mobileup/${datas._id}`,kk).then((data) => {
         console.log(data);
+        alert("success")
         // navigate(`/catagroy/${useparams.id}`)
         getData()
       }).catch((err) => {
@@ -56,18 +42,63 @@ function Catagroy() {
     pk.value = "";
     let pk1 = document.getElementById('hh');
     pk1.value = "";
+  }
+
+
+
+  const [name, setName] = useState({ name: "" });
+  const [prize, setPrize] = useState({ prize: "" });
+  const [offerprize, setOfferPrize] = useState({ offerprize: "" });
+  const [availability, setAvailability] = useState({ availability: "" });
+  // const [file, setFile] = useState({photo : ""});
+
+
+  // const onClickevent = (e) => {
+  //   setFile(e.target.files[0]);
+  // }
+  //product update
+
+  const onChangeEvent = (e) => {
+    e.preventDefault();
+
+    const pp = {
+      name: name,
+      prize: prize,
+      offerprize: offerprize,
+      availability : availability
+    }
+    console.log(pp)
+
+    {
+      userdata.map((datas) => {
+        axios.put(`http://localhost:8000/mobileup/${datas._id}`, pp).then((data) => {
+          console.log(data);
+          // navigate(`/catagroy/${useparams.id}`)
+          getData()
+        }).catch((err) => {
+          console.log(err)
+        })
+      })
+    }
+
+    let pk = document.getElementById('dd');
+    pk.value = "";
+    let pk1 = document.getElementById('hh');
+    pk1.value = "";
     let pk2 = document.getElementById('h');
     pk2.value = "";
+    let pk3 = document.getElementById('h');
+    pk3.value = "";
   }
 
 
 
   const handleChange = (e) => {
-    setProductUpload({...productUpload, [e.target.name] : e.target.value});
+    setProductUpload({ ...productUpload, [e.target.name]: e.target.value });
   }
 
   const handlePhoto = (e) => {
-    setProductUpload ({...productUpload, photo : e.target.files[0]});
+    setProductUpload({ ...productUpload, photo: e.target.files[0] });
     console.log(productUpload.photo)
   }
 
@@ -76,22 +107,23 @@ function Catagroy() {
 
     const formData = new FormData();
 
-    formData.append('name' , productUpload.name);
-    formData.append('prize' , productUpload.prize);
-    formData.append('offerprize' , productUpload.offerprize);
-    formData.append('photo' , productUpload.photo);
+    formData.append('name', productUpload.name);
+    formData.append('prize', productUpload.prize);
+    formData.append('offerprize', productUpload.offerprize);
+    formData.append('photo', productUpload.photo);
+    formData.append('availability', productUpload.availability);
 
     console.log(productUpload.photo);
 
     axios.post("http://localhost:8000/productupload", formData)
-    .then(res =>{
-      console.log(res)
-      alert("product added!!!")
-      navigate(`/catagroy/${useparams.id}`)
-      getData()
-    }).catch(err => {
-      console.log(err);
-    })
+      .then(res => {
+        console.log(res)
+        alert("product added!!!")
+        navigate(`/catagroy/${useparams.id}`)
+        getData()
+      }).catch(err => {
+        console.log(err);
+      })
 
     let pk = document.getElementById('ss');
     pk.value = "";
@@ -102,7 +134,7 @@ function Catagroy() {
     let pk4 = document.getElementById('ff');
     pk4.value = "";
   }
-  
+
 
 
   useEffect(() => {
@@ -110,29 +142,29 @@ function Catagroy() {
   }, [])
 
 
-const getData = () => {
-  
-  axios.get("http://localhost:8000/data").then((data) => {
-    setuserData(data.data);
-  }).catch((err) => {
-    console.log(err)
-  })
-}
+  const getData = () => {
+
+    axios.get("http://localhost:8000/data").then((data) => {
+      setuserData(data.data);
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
 
 
-    
+
   const pass = (e) => {
     e.preventDefault();
     navigate(`/admindashboard/${useparams.id}`)
   }
 
-   
+
   const pp = (e) => {
     e.preventDefault();
     navigate(`/catagroy/${useparams.id}`)
   }
 
-  
+
   const geter = () => {
     var elems = document.querySelectorAll('.modal');
     var trigg = M.Modal.init(elems, {});
@@ -140,10 +172,9 @@ const getData = () => {
 
 
 
-  
   return (
     <div>
-         <nav class="nav-wraper indigo">
+      <nav class="nav-wraper indigo">
         <div className="container">
           <div>
             <a href="/rr" className="brand-logo left">Devship</a>
@@ -158,65 +189,91 @@ const getData = () => {
         <div className='style6'>
         </div>
       </ul>
-
       <div className='container'>
         <div className='row s12'>
-        {userdata.map((datas) => {
-                    return(<>
-                    <div className='col s3'>
-                      <div className='card'>
-                        <div className='card-content'>
-                          <img src={`http://localhost:8000/${datas.photo}`} style={{height : "200px" , width : "200px"}} alt="..."/>
-                          <p>Mobile name  :&nbsp;&nbsp;&nbsp;{datas.name}</p>
-                          
-                          <p>Mobile prize : Rs.&nbsp;&nbsp;&nbsp;<span className='style11'>{datas.prize}</span></p>
-                          <p>Offer Prize : Rs. {datas.offerprize}</p>
-                        </div>
-                        <div className='card-action center'>
-                          <button className='btn '   onClick={()=>{
-                    axios.post(`http://localhost:8000/productdel/${datas._id}`).then((data)=>{
-                      console.log(data);
-                      // navigate(`/catagroy/${useparams.id}`)
-                      getData();
-                    }).catch((err)=>{
-                    console.log(err)
-                  })}}>Remove</button>&nbsp;
-                  <button className='btn modal-trigger' data-target="change1" onClick={(e) => geter(e)}>Update</button>
-                        </div>
-                      </div>
-                      </div>
-                    </>
-                    )
-            })}
+          {userdata.map((datas) => {
+            return (<>
+              <div className='col s3'>
+                <div className='card'>
+                  <div className='card-content'>
+                    <img src={`http://localhost:8000/${datas.photo}`} style={{ height: "200px", width: "200px" }} alt="..." />
+                    <p>Mobile name  :&nbsp;&nbsp;&nbsp;{datas.name}</p>
+                    <p>Mobile prize : Rs.&nbsp;&nbsp;&nbsp;<span className='style11'>{datas.prize}</span></p>
+                    <p>Offer Prize : Rs. {datas.offerprize}</p><br/><hr/>
+                    <div className='row'>
+                            <div className='col s6'>
+                            {datas.availability == true ? (<div style={{color : "green" , fontSize : "20px"}}>{datas.stock1}</div>) : (<div style={{color : "red" , fontSize : "20px"}}>{datas.stock2}</div>)}
+                            </div>
+                            <div className='col s6'>
+                            <button className='btn left modal-trigger' data-target="change2" onClick={(e) => geter (e)}>change</button>
+                            </div>
+                          </div><hr/>
+                  </div>
+                  <div className='card-action center'>
+                    <button className='btn ' onClick={() => {
+                      axios.post(`http://localhost:8000/productdel/${datas._id}`).then((data) => {
+                        console.log(data);
+                        // navigate(`/catagroy/${useparams.id}`)
+                        getData();
+                      }).catch((err) => {
+                        console.log(err)
+                      })
+                    }}>Remove</button>&nbsp;
+                    <button className='btn modal-trigger' data-target="change1" onClick={(e) => geter(e)}>Update</button>
+                  </div>
+                </div>
+              </div>
+            </>
+            )
+          })}
         </div>
       </div>
 
-
       <div id="change" className="modal">
-      <form onSubmit={handleSubmit} encType = "multipart/form-data" >
+        <form onSubmit={handleSubmit} encType="multipart/form-data" >
           <div className="modal-content">
             <h4 className='center'>Add Mobile</h4>
             <div className="row">
               <div className="input-field col s12">
-                <input type="text" className="validate" id='ss' name = "name" value={productUpload.name}   onChange={handleChange} required />
+                <input type="text" className="validate" id='ss' name="name" value={productUpload.name} onChange={handleChange} required />
                 <label for="Adminpassword">Mobile Name</label>
               </div>
             </div>
 
             <div className="row">
               <div className="input-field col s12">
-                <input  type="text" className="validate" id='ww' name="prize" value={productUpload.prize}  onChange={handleChange}  required />
+                <input type="text" className="validate" id='ww' name="prize" value={productUpload.prize} onChange={handleChange} required />
                 <label>Mobile Prize</label>
               </div>
             </div>
             <div className="row">
               <div className="input-field col s12">
-                <input  type="text" className="validate" id='w' name="offerprize" value={productUpload.offerprize}  onChange={handleChange}  required />
+                <input type="text" className="validate" id='w' name="offerprize" value={productUpload.offerprize} onChange={handleChange} required />
                 <label>Mobile offer Prize</label>
               </div>
             </div>
-              <input type='file' name = 'photo' id='ff' onChange={handlePhoto} accept = ".png, .jpeg, .jpg"/>
+
+            <div className="row">
+              <div className='col s6'>
+              <p>
+                <label>
+                  <input type="checkbox" value={true} name="availability" onChange={handleChange} />
+                  <span>Instock</span>
+                </label>
+              </p>
+              </div>
+              <div className='col s6'>
+              <p>
+                <label>
+                  <input type="checkbox" value={false} name="availability" onChange={handleChange} />
+                  <span>Outofstock</span>
+                </label>
+              </p>
+              </div>
             </div>
+
+            <input type='file' name='photo' id='ff' onChange={handlePhoto} accept=".png, .jpeg, .jpg" />
+          </div>
           <div className="modal-footer">
             <button type='submit' className='btn center'>Upload</button>
           </div>
@@ -224,36 +281,85 @@ const getData = () => {
       </div>
 
 
-    {/* product Update */}
+      {/* product Update */}
 
       <div id="change1" className="modal">
-              <form onSubmit={onChangeEvent} encType = "multipart/form-data" >
-              <div className="modal-content">
-                <h4 className='center'>Update Mobile</h4>
-                <div className="row">
-                  <div className="input-field col s12">
-                    <input type="text" className="validate" id='dd' name = "name" onChange={(e) => setName(e.target.value)} required />
-                    <label for="Adminpassword">Mobile Name</label>
-                  </div>
-                </div>
-    
-                <div className="row">
-                  <div className="input-field col s12">
-                    <input  type="text" className="validate" id='hh' name="prize"   onChange={(e) => setPrize(e.target.value)}  required />
-                    <label>Mobile Prize</label>
-                  </div>
-                </div>
+        <form onSubmit={onChangeEvent} encType="multipart/form-data" >
+          <div className="modal-content">
+            <h4 className='center'>Update Mobile</h4>
+            <div className="row">
+              <div className="input-field col s12">
+                <input type="text" className="validate" id='dd' name="name" onChange={(e) => setName(e.target.value)} required />
+                <label for="Adminpassword">Mobile Name</label>
+              </div>
+            </div>
 
+            <div className="row">
+              <div className="input-field col s12">
+                <input type="text" className="validate" id='hh' name="prize" onChange={(e) => setPrize(e.target.value)} required />
+                <label>Mobile Prize</label>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="input-field col s12">
+                <input type="text" className="validate" id='h' name="offerprize" onChange={(e) => setOfferPrize(e.target.value)} required />
+                <label>Mobile offer Prize</label>
+              </div>
+            </div>
+
+            <div className="row">
+              <div className='col s6'>
+              <p>
+                <label>
+                  <input type="checkbox" value={true} name="availability" onChange={(e) => setAvailability(e.target.value)} />
+                  <span>Instock</span>
+                </label>
+              </p>
+              </div>
+              <div className='col s6'>
+              <p>
+                <label>
+                  <input type="checkbox" value={false} name="availability" onChange={(e) => setAvailability(e.target.value)} />
+                  <span>Outofstock</span>
+                </label>
+              </p>
+              </div>
+            </div>
+            {/* <input type='file' name = 'photo' id='bb' accept = ".png, .jpeg, .jpg" onChange={onClickevent}/> */}
+          </div>
+          <div className="modal-footer">
+            <button type='submit' className='btn center'>Upload</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="change2" className="modal">
+              <form onSubmit={onChangeEventUpdate} encType = "multipart/form-data" >
+              <div className="modal-content">
+                <h4 className='center'>Update Shoe</h4>         
                 <div className="row">
-                  <div className="input-field col s12">
-                    <input  type="text" className="validate" id='h' name="offerprize"   onChange={(e) => setOfferPrize(e.target.value)}  required />
-                    <label>Mobile offer Prize</label>
-                  </div>
-                </div>
+              <div className='col s6'>
+              <p>
+                <label>
+                  <input type="checkbox" id = "dd" value={true} name="availability" onChange={(e) => setAvailability(e.target.value)} />
+                  <span>Instock</span>
+                </label>
+              </p>
+              </div>
+              <div className='col s6'>
+              <p>
+                <label>
+                  <input type="checkbox" id="hh" value={false} name="availability" onChange={(e) => setAvailability(e.target.value)} />
+                  <span>Outofstock</span>
+                </label>
+              </p>
+              </div>
+            </div>
                   {/* <input type='file' name = 'photo' id='bb' accept = ".png, .jpeg, .jpg" onChange={onClickevent}/> */}
                 </div>
               <div className="modal-footer">
-                <button type='submit' className='btn center'>Upload</button>
+                <button type='submit' className='btn center'>Update</button>
               </div>
             </form>
       </div>
@@ -262,4 +368,4 @@ const getData = () => {
   )
 }
 
-export default Catagroy
+export default Catagroy;

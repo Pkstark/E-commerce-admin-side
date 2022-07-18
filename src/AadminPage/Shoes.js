@@ -15,13 +15,38 @@ function Catagroy() {
       name : "",
       prize : "",
       offerprize : "",
-      photo : ""
+      photo : "",
+      availability: ""
     })
 
     const [name, setName] = useState({name : ""});
     const [prize, setPrize] = useState({prize : ""});
     const [offerprize, setOfferPrize] = useState({offerprize : ""});
+    const [availability, setAvailability] = useState({ availability: "" });
 
+    const onChangeEventUpdate = (e) => {
+      e.preventDefault();
+
+      const kk = {
+        availability : availability
+      }
+
+      {userdata.map((datas) => {
+        axios.put(`http://localhost:8000/shoeup/${datas._id}`,kk).then((data) => {
+          console.log(data);
+          alert("success")
+          // navigate(`/catagroy/${useparams.id}`)
+          getData()
+        }).catch((err) => {
+          console.log(err)
+        })
+      })}
+
+      let pk = document.getElementById('dd');
+      pk.value = "";
+      let pk1 = document.getElementById('hh');
+      pk1.value = "";
+    }
 
     const onChangeEvent = (e) => {
       e.preventDefault();
@@ -29,7 +54,8 @@ function Catagroy() {
       const pp = {
         name : name,
         prize : prize,
-        offerprize:offerprize
+        offerprize:offerprize,
+        availability : availability
       }
       console.log(pp)
   
@@ -50,6 +76,8 @@ function Catagroy() {
       pk1.value = "";
       let pk2 = document.getElementById('h');
       pk2.value = "";
+      let pk3 = document.getElementById('hr');
+      pk3.value = "";
     }
   
 
@@ -72,7 +100,8 @@ function Catagroy() {
     formData.append('prize' , productUpload.prize);
     formData.append('offerprize' , productUpload.offerprize);
     formData.append('photo' , productUpload.photo);
-
+    formData.append('availability', productUpload.availability);
+    
     console.log(productUpload.photo);
 
     axios.post("http://localhost:8000/shoe", formData)
@@ -92,6 +121,8 @@ function Catagroy() {
     pk3.value = "";
     let pk4 = document.getElementById('f');
     pk4.value = "";
+    let pk5 = document.getElementById('fd');
+    pk5.value = "";
   }
   
 
@@ -159,7 +190,15 @@ const getData = () => {
                           <p>Shoe name  :&nbsp;&nbsp;&nbsp;{datas.name}</p>
                           
                           <p>Shoe prize : Rs.&nbsp;&nbsp;&nbsp;<span className='style11'>{datas.prize}</span></p>
-                          <p>Offer Prize : Rs. {datas.offerprize}</p>
+                          <p>Offer Prize : Rs. {datas.offerprize}</p><br/><hr/>
+                          <div className='row'>
+                            <div className='col s6'>
+                            {datas.availability == true ? (<div style={{color : "green" , fontSize : "20px"}}>{datas.stock1}</div>) : (<div style={{color : "red" , fontSize : "20px"}}>{datas.stock2}</div>)}
+                            </div>
+                            <div className='col s6'>
+                            <button className='btn left modal-trigger' data-target="change2" onClick={(e) => geter (e)}>change</button>
+                            </div>
+                          </div><hr/>
                         </div>
                         <div className='card-action center'>
                           <button className='btn ' onClick={()=>{
@@ -206,6 +245,25 @@ const getData = () => {
               </div>
             </div>
 
+            <div className="row">
+              <div className='col s6'>
+              <p>
+                <label>
+                  <input type="checkbox" value={true} name="availability" onChange={handleChange} />
+                  <span>Instock</span>
+                </label>
+              </p>
+              </div>
+              <div className='col s6'>
+              <p>
+                <label>
+                  <input type="checkbox" value={false} name="availability" onChange={handleChange} />
+                  <span>Outofstock</span>
+                </label>
+              </p>
+              </div>
+            </div>
+
               <input type='file' name = 'photo' id='ff' onChange={handlePhoto} accept = ".png, .jpeg, .jpg"/>
             </div>
           <div className="modal-footer">
@@ -241,10 +299,60 @@ const getData = () => {
                   </div>
                 </div>
 
+                <div className="row">
+              <div className='col s6'>
+              <p>
+                <label>
+                  <input type="checkbox" value={true} name="availability" onChange={(e) => setAvailability(e.target.value)} />
+                  <span>Instock</span>
+                </label>
+              </p>
+              </div>
+              <div className='col s6'>
+              <p>
+                <label>
+                  <input type="checkbox" value={false} name="availability" onChange={(e) => setAvailability(e.target.value)} />
+                  <span>Outofstock</span>
+                </label>
+              </p>
+              </div>
+            </div>
+
                   {/* <input type='file' name = 'photo' id='bb' accept = ".png, .jpeg, .jpg" onChange={onClickevent}/> */}
                 </div>
               <div className="modal-footer">
                 <button type='submit' className='btn center'>Upload</button>
+              </div>
+            </form>
+      </div>
+
+
+      <div id="change2" className="modal">
+              <form onSubmit={onChangeEventUpdate} encType = "multipart/form-data" >
+              <div className="modal-content">
+                <h4 className='center'>Update Shoe</h4>         
+                <div className="row">
+              <div className='col s6'>
+              <p>
+                <label>
+                  <input type="checkbox" id = "dd" value={true} name="availability" onChange={(e) => setAvailability(e.target.value)} />
+                  <span>Instock</span>
+                </label>
+              </p>
+              </div>
+              <div className='col s6'>
+              <p>
+                <label>
+                  <input type="checkbox" id="hh" value={false} name="availability" onChange={(e) => setAvailability(e.target.value)} />
+                  <span>Outofstock</span>
+                </label>
+              </p>
+              </div>
+            </div>
+                  {/* <input type='file' name = 'photo' id='bb' accept = ".png, .jpeg, .jpg" onChange={onClickevent}/> */}
+                </div>
+              <div className="modal-footer">
+                <button type='submit' className='btn center'>Update</button>
               </div>
             </form>
       </div>

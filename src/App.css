@@ -42,3 +42,6 @@ style8{
   text-decoration: line-through;
   color: red;
 }
+.style12{
+  transform: perspective(100px) translateY(150px) translateX(90px);
+}

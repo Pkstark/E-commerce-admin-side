@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-
+import M from 'materialize-css/dist/js/materialize.min.js';
 import axios from 'axios';
 
 
@@ -32,7 +32,10 @@ function Admindashboard() {
     navigate(`/catagroy/${useparams.id}`)
   }
 
-
+  const Ship =() => {
+    var elems = document.querySelectorAll('.modal');
+    var trigg = M.Modal.init(elems, {});
+  }
   useEffect(() => {
     getData();
   }, [])
@@ -44,6 +47,10 @@ let getData = () => {
     }).catch((err) => {
       console.log(err)
     })
+}
+
+const handleSubmit =(e) => {
+  e.preventDefault();
 }
   return (
     <div>
@@ -82,6 +89,7 @@ let getData = () => {
                           <h5>Client Name : &nbsp;&nbsp;{datas.username}</h5>
                           <h5>Product Name :&nbsp;&nbsp; {datas.name}</h5>
                           <h5>Product prize : Rs.&nbsp;&nbsp;&nbsp;<span className='style11'>{datas.prize}</span></h5>
+                          <h5>Quantity : No : {datas.quantity}</h5>
                           <h5>Offer Prize : Rs. {datas.offerprize}</h5>
                           <h5>TotalPrize : Rs. {datas.totalprize}</h5>
                           <h5> Payment Status :&nbsp;&nbsp;<span style={{color : "green"}}>{datas.paid}</span></h5>
@@ -95,6 +103,7 @@ let getData = () => {
                     }).catch((err)=>{
                     console.log(err)
                   })}}>Cancel</button>
+                  {/* <button className=' btn green text-white right style12 modal-trigger' data-target="change" onClick={() => Ship}>Approve</button> */}
                       </div>
                       <hr/>
                       
@@ -106,6 +115,24 @@ let getData = () => {
         </div>
       </div>
      
+
+      {/* <div id="change" className="modal">
+      <form onSubmit={handleSubmit} encType = "multipart/form-data" >
+          <div className="modal-content">
+            <h4 className='center'>Add Mobile</h4>
+            <div className="row">
+              <div className="input-field col s12">
+                <input type="text" className="validate" id='ss' name = "name"required />
+                <label for="Adminpassword">Delivery Date</label>
+              </div>
+            </div>
+            </div>
+          <div className="modal-footer">
+            <button type='submit' className='btn center'>Upload</button>
+          </div>
+        </form>
+      </div> */}
+
     </div>
   )
 }
