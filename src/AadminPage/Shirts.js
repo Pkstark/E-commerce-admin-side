@@ -31,8 +31,7 @@ function Catagroy() {
         availability : availability
       }
   
-      {userdata.map((datas) => {
-        axios.put(`http://localhost:8000/shirtup/${datas._id}`,kk).then((data) => {
+      axios.put(`http://localhost:8000/shirtup/${prod}`,kk).then((data) => {
           console.log(data);
           alert("success")
           // navigate(`/catagroy/${useparams.id}`)
@@ -40,7 +39,6 @@ function Catagroy() {
         }).catch((err) => {
           console.log(err)
         })
-      })}
   
       let pk = document.getElementById('dd');
       pk.value = "";
@@ -160,6 +158,9 @@ const getData = () => {
     var elems = document.querySelectorAll('.modal');
     var trigg = M.Modal.init(elems, {});
   }
+
+  const prod = localStorage.getItem('id1')
+  console.log(prod)
   
   return (
     <div>
@@ -195,7 +196,10 @@ const getData = () => {
                             {datas.availability == true ? (<div style={{color : "green" , fontSize : "20px"}}>{datas.stock1}&nbsp;</div>) : (<div style={{color : "red" , fontSize : "20px"}}>{datas.stock2}</div>)}
                             </div>
                             <div className='col s6'>
-                            <button className='btn left modal-trigger' data-target="change2" onClick={(e) => geter (e)}>change</button>
+                            <button className='btn left modal-trigger' data-target="change2" onClick={(e) => {
+                              localStorage.setItem('id1',datas._id);
+                              geter(e);
+                            }}>change</button>
                             </div>
                           </div><hr/>
                         </div>
