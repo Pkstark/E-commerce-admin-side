@@ -39,7 +39,7 @@ function Catagroy() {
       name: name,
       prize: prize,
       offerprize: offerprize,
-      availability : availability
+      availability : availability,
     }
     console.log(pp)
 
@@ -86,7 +86,6 @@ function Catagroy() {
     formData.append('offerprize', productUpload.offerprize);
     formData.append('photo', productUpload.photo);
     formData.append('availability', productUpload.availability);
-
     console.log(productUpload.photo);
 
     axios.post("http://localhost:8000/productupload", formData)

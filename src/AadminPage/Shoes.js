@@ -122,15 +122,12 @@ function Catagroy() {
     let pk5 = document.getElementById('fd');
     pk5.value = "";
   }
-  
 
 
   useEffect(() => {
     
     getData()
   }, [])
-
-
 
 
 const getData = () => {
