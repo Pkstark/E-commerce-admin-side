@@ -45,3 +45,6 @@ style8{
 .style12{
   transform: perspective(100px) translateY(150px) translateX(90px);
 }
+.style13{
+  transform: perspective(100px) translateY(50px);
+}

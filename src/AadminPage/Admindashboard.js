@@ -41,7 +41,7 @@ function Admindashboard() {
   }, [])
   
 let getData = () => {
-  axios.get('http://localhost:8000/adminclientdata').then((data) => {
+  axios.get('http://localhost:8000/overdataadmin').then((data) => {
       console.log(data);
       setData(data.data);
     }).catch((err) => {
@@ -82,21 +82,26 @@ const handleSubmit =(e) => {
                     <div className='row'>
                     <div className='card '>
                       <div className='card-content col s4'>
-                      <img src={datas.photo} style={{height : "200px" , width : "200px"}} alt="..."/>
+                      <img className='style13' src={datas.photo} style={{height : "200px" , width : "200px"}} alt="..."/>
                       </div>
 
                       <div className='card-content col s4'>
-                          <h5>Client Name : &nbsp;&nbsp;{datas.username}</h5>
-                          <h5>Product Name :&nbsp;&nbsp; {datas.name}</h5>
-                          <h5>Product prize : Rs.&nbsp;&nbsp;&nbsp;<span className='style11'>{datas.prize}</span></h5>
-                          <h5>Quantity : No : {datas.quantity}</h5>
-                          <h5>Offer Prize : Rs. {datas.offerprize}</h5>
-                          <h5>TotalPrize : Rs. {datas.totalprize}</h5>
-                          <h5> Payment Status :&nbsp;&nbsp;<span style={{color : "green"}}>{datas.paid}</span></h5>
+                          <p>Client Name : &nbsp;&nbsp;{datas.username}</p>
+                          <p>Product Name :&nbsp;&nbsp; {datas.name}</p>
+                          <p>Product prize : Rs.&nbsp;&nbsp;&nbsp;<span className='style11'>{datas.prize}</span></p>
+                          <p>Quantity : No : {datas.quantity}</p>
+                          <p>Discount : {datas.discount}</p>
+                          <p>Offer Prize : Rs. {datas.offerprize}</p>
+                          <p>TotalPrize : Rs. {datas.totalprize}</p>
+                          <p>Address : {datas.flatno}{datas.address1}{datas.address2}</p>
+                          <p>City : {datas.city}</p>
+                          <p>State : {datas.state} - {datas.pincode}</p>
+                          <p>Cantact number : &nbsp;&nbsp;&nbsp;{datas.mobile}</p>
+                          <p> Payment Status :&nbsp;&nbsp;<span style={{color : "green"}}>{datas.paid}</span></p>
                       </div>
                       <div className='card-content col s4'>
                           <button className='btn red text-white right style10' onClick={()=>{
-                    axios.post(`http://localhost:8000/adminordercancel/${datas._id}`).then((data)=>{
+                    axios.post(`http://localhost:8000/overdel/${datas._id}`).then((data)=>{
                       console.log(data);
                       // navigate(`/admindashboard/${useparams.id}`)
                       getData();
