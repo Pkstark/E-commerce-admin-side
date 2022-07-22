@@ -90,12 +90,12 @@ const handleSubmit =(e) => {
                           <p>Product Name :&nbsp;&nbsp; {datas.name}</p>
                           <p>Product prize : Rs.&nbsp;&nbsp;&nbsp;<span className='style11'>{datas.prize}</span></p>
                           <p>Quantity : No : {datas.quantity}</p>
-                          <p>Discount : {datas.discount}</p>
+                          <p>Discount : {datas.discount}%</p>
                           <p>Offer Prize : Rs. {datas.offerprize}</p>
                           <p>TotalPrize : Rs. {datas.totalprize}</p>
-                          <p>Address : {datas.flatno}{datas.address1}{datas.address2}</p>
-                          <p>City : {datas.city}</p>
-                          <p>State : {datas.state} - {datas.pincode}</p>
+                          <p>Address : {datas.flatno},{datas.address1},{datas.address2}</p>
+                          <p>State : {datas.state} </p>
+                          <p>City : {datas.city} - {datas.pincode}</p>
                           <p>Cantact number : &nbsp;&nbsp;&nbsp;{datas.mobile}</p>
                           <p> Payment Status :&nbsp;&nbsp;<span style={{color : "green"}}>{datas.paid}</span></p>
                       </div>
